@@ -3,13 +3,16 @@ import { Canvas, useThree } from '@react-three/fiber';
 import * as THREE from 'three';
 import { OrbitControls, useGLTF } from '@react-three/drei';
 import { Container, Row, Col, Form, Button, ButtonGroup } from 'react-bootstrap';
-import { Text } from '@react-three/drei';
+import { Text, useFont } from '@react-three/drei';
 import "./App.css"
 import Select, { components } from 'react-select';
 import { OverlayTrigger, Tooltip } from 'react-bootstrap';
 import { BsInfoCircle } from 'react-icons/bs'; // Bootstrap icon
 import { useMediaQuery } from 'react-responsive';
 import { FontLoader } from 'three/examples/jsm/Addons.js';
+
+useFont.preload("https://cdn.jsdelivr.net/gh/MdeMedina/archivosVarsity/fuenteModelo.ttf");
+useFont.preload("https://cdn.jsdelivr.net/gh/MdeMedina/archivosVarsity/cursiva.ttf");
 
 // Define tu hook para detectar si es mobile
 const useIsMobile = () => useMediaQuery({ query: '(max-width: 390px)' });
@@ -480,15 +483,15 @@ function WindowScene({ bodyColor, sleeveColor, nombre = "", letra = "", bNombre 
         }} s
       >
         <CameraLight />
-        <Suspense fallback={"algo salio mal"}>
+        <Suspense fallback={null}>
           <Modelo bodyColor={bodyColor} sleeveColor={sleeveColor} setTargetMesh={setTargetMesh} />
+        </Suspense>
+        <Suspense fallback={null}>
           <NombreBordado texto={nombre} font={font} />
-          <NumeroSleeve texto={number} colorBordadoParche={colorBordadoParche} colorRellenoParche={colorRellenoParche} />
-          {/* <TextoSobreMesh texto={letra} targetMesh={targetMesh} /> */}
+          <LetraBordada texto={letra} colorBordadoParche={colorBordadoParche} colorRellenoParche={colorRellenoParche} />
           <NombreAtras texto={bNombre} colorBordadoParche={colorBordadoParche} colorRellenoParche={colorRellenoParche} />
           <NumerosAtras texto={bnumber + ""} colorBordadoParche={colorBordadoParche} colorRellenoParche={colorRellenoParche} />
-          <LetraBordada texto={letra} colorBordadoParche={colorBordadoParche} colorRellenoParche={colorRellenoParche} />
-          {/* <NumeroSleeve texto={letra} /> */}
+          <NumeroSleeve texto={number} colorBordadoParche={colorBordadoParche} colorRellenoParche={colorRellenoParche} />
         </Suspense>
         <OrbitControls
           enableZoom={false}
