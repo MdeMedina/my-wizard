@@ -187,7 +187,7 @@ function TextoSobreMesh({ texto, targetMesh }) {
       anchorX="center"
       anchorY="middle"
       rotation={[0, 0, 0]}
-      font="https://cdn.shopify.com/s/files/1/0652/3709/0439/files/fuenteModelo.ttf?v=1775082385"
+      font="https://cdn.jsdelivr.net/gh/MdeMedina/archivosVarsity/fuenteModelo.ttf"
     >
       {texto}
     </Text>
@@ -202,11 +202,11 @@ function NombreBordado({ texto, font_url, font }) {
   let color = "#ffffff"; // Color del texto
   let oColor = "#ffffff"; // Color del borde
   // Aseguramos que font_url siempre tenga una fuente por defecto por si acaso
-  font_url = "https://cdn.shopify.com/s/files/1/0652/3709/0439/files/fuenteModelo.ttf?v=1775082385";
+  font_url = "https://cdn.jsdelivr.net/gh/MdeMedina/archivosVarsity/fuenteModelo.ttf";
 
   // Convertimos a minúscula para evitar errores de tipeo
   if (font && font.toLowerCase() === "fancy") {
-    font_url = "https://cdn.shopify.com/s/files/1/0652/3709/0439/files/cursiva.ttf?v=1775082385";
+    font_url = "https://cdn.jsdelivr.net/gh/MdeMedina/archivosVarsity/cursiva.ttf";
   } else if (font === "") {
     baseSize = 0.04;
     // Si la fuente vacía en tu lógica significa block letter, mantenemos la de arriba
@@ -288,7 +288,7 @@ function NombreAtras({ texto = "", colorBordadoParche, colorRellenoParche }) {
                 outlineWidth={0.004}
                 anchorX="center"
                 anchorY="middle"
-                font="https://cdn.shopify.com/s/files/1/0652/3709/0439/files/fuenteModelo.ttf?v=1775082385"
+                font="https://cdn.jsdelivr.net/gh/MdeMedina/archivosVarsity/fuenteModelo.ttf"
               >
                 {char}
               </Text>
@@ -317,7 +317,7 @@ function NumerosAtras({ texto, colorBordadoParche, colorRellenoParche }) {
       anchorX="center"
       anchorY="middle"
       rotation={[0.08, 3.15, 0]} // Para que mire al frente si es necesario
-      font="https://cdn.shopify.com/s/files/1/0652/3709/0439/files/fuenteModelo.ttf?v=1775082385" // Fuente personalizada
+      font="https://cdn.jsdelivr.net/gh/MdeMedina/archivosVarsity/fuenteModelo.ttf" // Fuente personalizada
     >
       {texto}
     </Text>
@@ -359,7 +359,7 @@ function NumeroSleeve({ texto = "", colorBordadoParche, colorRellenoParche }) {
             outlineWidth={0.002}
             anchorX="center"
             anchorY="middle"
-            font="https://cdn.shopify.com/s/files/1/0652/3709/0439/files/fuenteModelo.ttf?v=1775082385"
+            font="https://cdn.jsdelivr.net/gh/MdeMedina/archivosVarsity/fuenteModelo.ttf"
           >
             {char}
           </Text>
@@ -382,7 +382,7 @@ function LetraBordada({ texto, colorBordadoParche, colorRellenoParche }) {
       anchorX="center"
       anchorY="middle"
       rotation={[-0.35, 0.14, 0]} // Para que mire al frente si es necesario
-      font="https://cdn.shopify.com/s/files/1/0652/3709/0439/files/fuenteModelo.ttf?v=1775082385"
+      font="https://cdn.jsdelivr.net/gh/MdeMedina/archivosVarsity/fuenteModelo.ttf"
     >
       {texto}
     </Text>

@@ -15,19 +15,19 @@
 
 @font-face {
   font-family: 'VarsityFont';
-  src: url('https://cdn.shopify.com/s/files/1/0652/3709/0439/files/fuenteModelo.ttf?v=1775082385') format('truetype');
+  src: url('https://cdn.jsdelivr.net/gh/MdeMedina/archivosVarsity/fuenteModelo.ttf') format('truetype');
   font-weight: normal;
   font-style: normal;
 }
 
 @font-face {
   font-family: 'Varsity';
-  src: url('https://cdn.shopify.com/s/files/1/0652/3709/0439/files/fuenteModelo.ttf?v=1775082385') format('truetype');
+  src: url('https://cdn.jsdelivr.net/gh/MdeMedina/archivosVarsity/fuenteModelo.ttf') format('truetype');
 }
 
 @font-face {
   font-family: 'Fancy';
-  src: url('https://cdn.shopify.com/s/files/1/0652/3709/0439/files/cursiva.ttf?v=1775082385') format('truetype');
+  src: url('https://cdn.jsdelivr.net/gh/MdeMedina/archivosVarsity/cursiva.ttf') format('truetype');
 }
 
 .varsity-font {
