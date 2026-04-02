@@ -1,0 +1,110 @@
+.App {
+  text-align: center;
+}
+
+.App-logo {
+  height: 40vmin;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .App-logo {
+    animation: App-logo-spin infinite 20s linear;
+  }
+}
+
+@font-face {
+  font-family: 'VarsityFont';
+  src: url('https://cdn.shopify.com/s/files/1/0652/3709/0439/files/fuenteModelo.ttf?v=1775082385') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Varsity';
+  src: url('https://cdn.shopify.com/s/files/1/0652/3709/0439/files/fuenteModelo.ttf?v=1775082385') format('truetype');
+}
+
+@font-face {
+  font-family: 'Fancy';
+  src: url('https://cdn.shopify.com/s/files/1/0652/3709/0439/files/cursiva.ttf?v=1775082385') format('truetype');
+}
+
+.varsity-font {
+  font-family: 'VarsityFont', sans-serif;
+  font-size: 80px;
+  color: #1c3557;
+  /* Contorno (gold) */
+  -webkit-text-stroke: 1px #872D35;
+  /* Relleno (granate) */
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+
+.bodyColors:hover {
+  cursor: pointer
+}
+
+.btn-size {
+  padding: 0.35rem 0.75rem;
+  border: 1px solid #8a8d91;
+  border-radius: 6px;
+  background-color: transparent;
+  color: #4d5057;
+  font-weight: 400;
+  font-size: 14px;
+  min-width: 42px;
+  text-align: center;
+  transition: all 0.2s ease-in-out;
+}
+
+.btn-size:hover {
+  cursor: pointer;
+  background-color: #e5e5e5;
+}
+
+.btn-size.selected {
+  background-color: #6c757d;
+  /* gris oscuro */
+  color: white;
+  border-color: transparent;
+}
+
+.form-control:focus {
+  outline: none;
+  box-shadow: none;
+  border-color: inherit;
+}
+
+.App-header {
+  background-color: #282c34;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+
+.tooltip {
+  box-shadow: none !important;
+}
+
+.tooltip .tooltip-arrow::before {
+  box-shadow: none !important;
+}
+
+.App-link {
+  color: #61dafb;
+}
+
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+}
