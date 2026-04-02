@@ -14,6 +14,15 @@ import { FontLoader } from 'three/examples/jsm/Addons.js';
 useFont.preload("https://cdn.jsdelivr.net/gh/MdeMedina/archivosVarsity/fuenteModelo.ttf");
 useFont.preload("https://cdn.jsdelivr.net/gh/MdeMedina/archivosVarsity/cursiva.ttf");
 
+function useDebounce(value, delay = 300) {
+  const [debounced, setDebounced] = useState(value);
+  useEffect(() => {
+    const timer = setTimeout(() => setDebounced(value), delay);
+    return () => clearTimeout(timer);
+  }, [value, delay]);
+  return debounced;
+}
+
 // Define tu hook para detectar si es mobile
 const useIsMobile = () => useMediaQuery({ query: '(max-width: 390px)' });
 const useIsTablet = () => useMediaQuery({ query: '(max-width: 768px)' });
@@ -197,42 +206,42 @@ function TextoSobreMesh({ texto, targetMesh }) {
   );
 }
 
-function NombreBordado({ texto, font_url, font }) {
-  // Ajustar tamaño según longitud del texto
+function NombreBordado({ texto, font }) {
   let baseSize = 0.034;
   const maxCharsBeforeShrink = 8;
   const shrinkFactor = 0.002;
-  let color = "#ffffff"; // Color del texto
-  let oColor = "#ffffff"; // Color del borde
-  // Usamos fuente vacía (default de drei Text) para Block Letter
-  font_url = "";
+  let color = "#ffffff";
+  let oColor = "#ffffff";
+  let oWidth = 0.001;
 
-  // Setear la tipografía según la opción elegida
+  // URL ABSOLUTA SIEMPRE. JAMÁS USAR STRING VACÍO.
+  let font_url = "https://cdn.jsdelivr.net/gh/MdeMedina/archivosVarsity/fuenteModelo.ttf";
+
   if (font && font.toLowerCase() === "fancy") {
     font_url = "https://cdn.jsdelivr.net/gh/MdeMedina/archivosVarsity/cursiva.ttf";
-  } else if (font === "") {
+    // La cursiva no soporta outline numérico en WebGL, se lo quitamos para proteger el render
+    oWidth = 0;
+  } else {
     baseSize = 0.04;
   }
-  console.log("Font URL:", font_url);
-  console.log("Font:", font);
+
   const adjustedFontSize = Math.max(
     baseSize - Math.max(0, texto.length - maxCharsBeforeShrink) * shrinkFactor,
-    0.018 // Límite mínimo para que no quede ilegible
+    0.018
   );
-  return (
 
+  return (
     <Text
-      key={font_url}
-      position={[-0.16, 0.35, 0.195]} // Ubicación del texto
+      key={font} // Bala de plata para el re-render de cambio de fuente
+      position={[-0.16, 0.35, 0.195]}
       fontSize={adjustedFontSize}
-      color={color} // Color del text
+      color={color}
       outlineColor={oColor}
-      outlineWidth={"3%"}
-      // Ancho del borde
+      outlineWidth={oWidth}
       anchorX="center"
       anchorY="middle"
-      rotation={[-0.3, -0.13, 0]} // Para que mire al frente si es necesario
-      font={font_url} // Fuente personalizada
+      rotation={[-0.3, -0.13, 0]}
+      font={font_url}
     >
       {texto}
     </Text>
@@ -288,7 +297,7 @@ function NombreAtras({ texto = "", colorBordadoParche, colorRellenoParche }) {
                 fontSize={adjustedFontSize}
                 color={colorRellenoParche}
                 outlineColor={colorBordadoParche}
-                outlineWidth={"5%"}
+                outlineWidth={0.004}
                 anchorX="center"
                 anchorY="middle"
                 font="https://cdn.jsdelivr.net/gh/MdeMedina/archivosVarsity/fuenteModelo.ttf"
@@ -315,7 +324,7 @@ function NumerosAtras({ texto, colorBordadoParche, colorRellenoParche }) {
       fontSize={0.45}
       color={colorRellenoParche} // Color del text
       outlineColor={colorBordadoParche}
-      outlineWidth={"1%"}
+      outlineWidth={0.004}
       // Ancho del borde
       anchorX="center"
       anchorY="middle"
@@ -359,7 +368,7 @@ function NumeroSleeve({ texto = "", colorBordadoParche, colorRellenoParche }) {
             fontSize={0.2}
             color={colorRellenoParche}
             outlineColor={colorBordadoParche}
-            outlineWidth={"1%"}
+            outlineWidth={0.002}
             anchorX="center"
             anchorY="middle"
             font="https://cdn.jsdelivr.net/gh/MdeMedina/archivosVarsity/fuenteModelo.ttf"
@@ -380,7 +389,7 @@ function LetraBordada({ texto, colorBordadoParche, colorRellenoParche }) {
       fontSize={0.28}
       color={colorRellenoParche} // Color del text
       outlineColor={colorBordadoParche}
-      outlineWidth={"2%"}
+      outlineWidth={0.005}
       // Ancho del borde
       anchorX="center"
       anchorY="middle"
@@ -394,31 +403,34 @@ function LetraBordada({ texto, colorBordadoParche, colorRellenoParche }) {
 
 function Modelo({ bodyColor, sleeveColor, setTargetMesh }) {
   const { scene, nodes, materials } = useGLTF("https://cdn.shopify.com/3d/models/4db8f598a28efa7d/Modelo.glb");
-  console.log(materials);
-  setTargetMesh(nodes.Parche_manga_D); // Asigna el mesh al estado para que pueda ser referenciado por TextoSobreMesh
-  useEffect(() => {
-    scene.traverse((child) => {
-      if (
-        child.isMesh &&
-        (
-          /^[0-9]$/.test(child.name) ||         // "0", "1", ..., "9"
-          /^[0-9]_/.test(child.name) ||         // "0_contorno", "1_shadow", etc.
-          /contorno/i.test(child.name) ||       // cualquier cosa que contenga "contorno" (incluso mal escrito)
-          /cotnorno/i.test(child.name)          // typo común incluido
-        )
-      ) {
-        child.visible = false; // oculta el mesh
-        // o: scene.remove(child); para eliminarlo del árbol completamente
-      }
-    });
+  const initialized = useRef(false); // ← agregá esto
 
+  setTargetMesh(nodes.Parche_manga_D);
+
+  useEffect(() => {
+    if (!initialized.current) {       // ← solo la primera vez
+      initialized.current = true;
+      scene.traverse((child) => {
+        if (
+          child.isMesh &&
+          (
+            /^[0-9]$/.test(child.name) ||
+            /^[0-9]_/.test(child.name) ||
+            /contorno/i.test(child.name) ||
+            /cotnorno/i.test(child.name)
+          )
+        ) {
+          child.visible = false;
+        }
+      });
+    }
+
+    // Los colores sí deben actualizarse en cada render
     if (materials.Cuerpo_base) {
       materials.Cuerpo_base.color.set(bodyColor);
-
     }
     if (materials.Mangas) {
       materials.Mangas.color.set(sleeveColor);
-      materials.Botones.color.set(sleeveColor);
       materials.Botones.color.set(sleeveColor);
       materials[""].color.set(sleeveColor);
       materials.Pretina_y_puños.color.set(sleeveColor);
@@ -880,6 +892,11 @@ function Wizard() {
   const [bnumber, setBnumber] = useState("");
   const [number, setNumber] = useState("");
   const [font, setFont] = useState("fancy");
+
+  const nombreDebounced = useDebounce(nombre, 300);
+  const letraDebounced = useDebounce(letra, 300);
+  const bnombreDebounced = useDebounce(bnombre, 300);
+
   return (
     <Container style={{
       backgroundColor: "#F9F8F3",
@@ -890,9 +907,9 @@ function Wizard() {
           <WindowScene
             bodyColor={bodyColor}
             sleeveColor={sleeveColor}
-            letra={letra}
-            nombre={nombre}
-            bNombre={bnombre}
+            letra={letraDebounced}
+            nombre={nombreDebounced}
+            bNombre={bnombreDebounced}
             bnumber={bnumber}
             number={number}
             font={font}
