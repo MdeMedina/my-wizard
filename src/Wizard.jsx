@@ -201,15 +201,14 @@ function NombreBordado({ texto, font_url, font }) {
   const shrinkFactor = 0.002;
   let color = "#ffffff"; // Color del texto
   let oColor = "#ffffff"; // Color del borde
-  // Aseguramos que font_url siempre tenga una fuente por defecto por si acaso
-  font_url = "https://cdn.jsdelivr.net/gh/MdeMedina/archivosVarsity/fuenteModelo.ttf";
+  // Usamos fuente vacía (default de drei Text) para Block Letter
+  font_url = "";
 
-  // Convertimos a minúscula para evitar errores de tipeo
+  // Setear la tipografía según la opción elegida
   if (font && font.toLowerCase() === "fancy") {
     font_url = "https://cdn.jsdelivr.net/gh/MdeMedina/archivosVarsity/cursiva.ttf";
   } else if (font === "") {
     baseSize = 0.04;
-    // Si la fuente vacía en tu lógica significa block letter, mantenemos la de arriba
   }
   console.log("Font URL:", font_url);
   console.log("Font:", font);
@@ -220,11 +219,12 @@ function NombreBordado({ texto, font_url, font }) {
   return (
 
     <Text
+      key={font_url}
       position={[-0.16, 0.35, 0.195]} // Ubicación del texto
       fontSize={adjustedFontSize}
       color={color} // Color del text
       outlineColor={oColor}
-      outlineWidth={0.001}
+      outlineWidth={"3%"}
       // Ancho del borde
       anchorX="center"
       anchorY="middle"
@@ -285,7 +285,7 @@ function NombreAtras({ texto = "", colorBordadoParche, colorRellenoParche }) {
                 fontSize={adjustedFontSize}
                 color={colorRellenoParche}
                 outlineColor={colorBordadoParche}
-                outlineWidth={0.004}
+                outlineWidth={"5%"}
                 anchorX="center"
                 anchorY="middle"
                 font="https://cdn.jsdelivr.net/gh/MdeMedina/archivosVarsity/fuenteModelo.ttf"
@@ -312,7 +312,7 @@ function NumerosAtras({ texto, colorBordadoParche, colorRellenoParche }) {
       fontSize={0.45}
       color={colorRellenoParche} // Color del text
       outlineColor={colorBordadoParche}
-      outlineWidth={0.004}
+      outlineWidth={"1%"}
       // Ancho del borde
       anchorX="center"
       anchorY="middle"
@@ -356,7 +356,7 @@ function NumeroSleeve({ texto = "", colorBordadoParche, colorRellenoParche }) {
             fontSize={0.2}
             color={colorRellenoParche}
             outlineColor={colorBordadoParche}
-            outlineWidth={0.002}
+            outlineWidth={"1%"}
             anchorX="center"
             anchorY="middle"
             font="https://cdn.jsdelivr.net/gh/MdeMedina/archivosVarsity/fuenteModelo.ttf"
@@ -377,7 +377,7 @@ function LetraBordada({ texto, colorBordadoParche, colorRellenoParche }) {
       fontSize={0.28}
       color={colorRellenoParche} // Color del text
       outlineColor={colorBordadoParche}
-      outlineWidth={0.005}
+      outlineWidth={"2%"}
       // Ancho del borde
       anchorX="center"
       anchorY="middle"
@@ -726,7 +726,7 @@ function FuenteSelector({ selectedOption, onChange }) {
     <div className="mb-3">
       <Select
         options={optionsFont}
-        value={options.find((opt) => opt.value === selectedOption)}
+        value={optionsFont.find((opt) => opt.value === selectedOption)}
         onChange={(selected) => onChange(selected.value)}
         components={{ Option: CustomOption, SingleValue: CustomSingleValue }}
         isSearchable={false}
@@ -876,7 +876,7 @@ function Wizard() {
   const [ColorRellenoParche, setColorRellenoParche] = useState("#ffffff");
   const [bnumber, setBnumber] = useState("");
   const [number, setNumber] = useState("");
-  const [font, setFont] = useState("Fancy");
+  const [font, setFont] = useState("fancy");
   return (
     <Container style={{
       backgroundColor: "#F9F8F3",
